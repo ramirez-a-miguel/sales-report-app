@@ -1,0 +1,44 @@
+{
+  "name": "presales-progress-report-app",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "main": "electron/main.cjs",
+  "scripts": {
+    "dev": "concurrently -k \"npm:api:dev\" \"npm:vite:dev\"",
+    "vite:dev": "vite --host 127.0.0.1",
+    "api:dev": "node server/index.mjs",
+    "electron:dev": "concurrently -k \"npm:api:dev\" \"npm:vite:dev\" \"wait-on http://127.0.0.1:5173 http://127.0.0.1:3001/api/health && electron .\"",
+    "build": "vite build",
+    "preview": "vite preview --host 127.0.0.1",
+    "electron:start": "electron .",
+    "db:up": "docker compose up -d postgres",
+    "docker:up": "docker compose up --build",
+    "docker:test": "docker compose -f docker-compose.test.yml up --build --abort-on-container-exit --exit-code-from smoke-test"
+  },
+  "dependencies": {
+    "@emotion/react": "^11.14.0",
+    "@emotion/styled": "^11.14.1",
+    "@mui/icons-material": "^9.0.1",
+    "@mui/material": "^9.0.1",
+    "@vitejs/plugin-react": "^5.1.0",
+    "cors": "^2.8.6",
+    "dotenv": "^17.4.2",
+    "express": "^5.2.1",
+    "jspdf": "^4.2.1",
+    "lucide-react": "^0.561.0",
+    "pg": "^8.20.0",
+    "react": "^19.2.1",
+    "react-dom": "^19.2.1",
+    "typescript": "^5.9.3",
+    "vite": "^7.2.7"
+  },
+  "devDependencies": {
+    "@types/node": "^25.6.2",
+    "@types/react": "^19.2.14",
+    "@types/react-dom": "^19.2.3",
+    "concurrently": "^9.2.1",
+    "electron": "^42.0.0",
+    "wait-on": "^9.0.5"
+  }
+}

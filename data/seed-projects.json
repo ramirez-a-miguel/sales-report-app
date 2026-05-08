@@ -1,0 +1,79 @@
+[
+  {
+    "id": "p-cloudlift",
+    "customer": "Northwind Manufacturing",
+    "opportunity": "Azure landing zone and ERP migration",
+    "segment": "Enterprise",
+    "phase": "POC",
+    "progress": 68,
+    "value": 420000,
+    "nextMilestone": "POC readout with security and infrastructure leads",
+    "due": "2026-05-22",
+    "risk": "Medium",
+    "summary": "Validated network topology, identity model, and migration waves. Cost governance is still being aligned with finance.",
+    "tasks": [
+      { "id": "t1", "title": "Complete POC success criteria matrix", "owner": "Miguel", "status": "Done", "due": "2026-05-03" },
+      { "id": "t2", "title": "Review private endpoint design", "owner": "Customer security", "status": "In progress", "due": "2026-05-12" },
+      { "id": "t3", "title": "Prepare migration timeline for steering committee", "owner": "Miguel", "status": "In progress", "due": "2026-05-18" }
+    ],
+    "stack": [
+      { "id": "s1", "layer": "Cloud", "product": "Azure Landing Zone", "vendor": "Microsoft", "purpose": "Subscription, policy, identity and network foundation", "criticality": "Critical" },
+      { "id": "s2", "layer": "Security", "product": "Microsoft Defender for Cloud", "vendor": "Microsoft", "purpose": "Cloud security posture management", "criticality": "Critical" },
+      { "id": "s3", "layer": "Observability", "product": "Azure Monitor", "vendor": "Microsoft", "purpose": "Metrics, logs and alerting", "criticality": "Standard" }
+    ],
+    "sbom": [
+      { "id": "b1", "component": "Terraform AzureRM Provider", "version": "4.31.0", "license": "MPL-2.0", "supplier": "HashiCorp", "securityNotes": "Pinned provider version for reproducible deployments." },
+      { "id": "b2", "component": "Azure Verified Modules", "version": "0.20.x", "license": "MIT", "supplier": "Microsoft", "securityNotes": "Review module source before production promotion." }
+    ]
+  },
+  {
+    "id": "p-retail-ai",
+    "customer": "BrightCart Retail",
+    "opportunity": "Customer analytics platform on AWS",
+    "segment": "SMB",
+    "phase": "Solution Design",
+    "progress": 42,
+    "value": 145000,
+    "nextMilestone": "Architecture decision record sign-off",
+    "due": "2026-06-05",
+    "risk": "Low",
+    "summary": "Business sponsor approved MVP scope. Data retention and dashboard access model need final confirmation.",
+    "tasks": [
+      { "id": "t4", "title": "Map source systems and ingestion cadence", "owner": "Customer data lead", "status": "Done", "due": "2026-04-29" },
+      { "id": "t5", "title": "Estimate monthly platform run cost", "owner": "Miguel", "status": "Done", "due": "2026-05-02" },
+      { "id": "t6", "title": "Draft dashboard user roles", "owner": "Miguel", "status": "In progress", "due": "2026-05-14" }
+    ],
+    "stack": [
+      { "id": "s4", "layer": "Cloud", "product": "Amazon S3", "vendor": "AWS", "purpose": "Data lake storage", "criticality": "Critical" },
+      { "id": "s5", "layer": "Analytics", "product": "Amazon QuickSight", "vendor": "AWS", "purpose": "Executive dashboards", "criticality": "Standard" }
+    ],
+    "sbom": [
+      { "id": "b3", "component": "dbt Core", "version": "1.8.x", "license": "Apache-2.0", "supplier": "dbt Labs", "securityNotes": "Used for transformation models in MVP." }
+    ]
+  },
+  {
+    "id": "p-health-sec",
+    "customer": "CareWell Clinics",
+    "opportunity": "Zero trust review and Microsoft 365 hardening",
+    "segment": "Enterprise",
+    "phase": "Proposal",
+    "progress": 84,
+    "value": 260000,
+    "nextMilestone": "Commercial proposal review with procurement",
+    "due": "2026-05-16",
+    "risk": "High",
+    "summary": "Technical scope is agreed. Timeline pressure remains because the customer wants rollout before audit season.",
+    "tasks": [
+      { "id": "t7", "title": "Finalize recommended control roadmap", "owner": "Miguel", "status": "Done", "due": "2026-05-01" },
+      { "id": "t8", "title": "Confirm licensing delta", "owner": "Partner manager", "status": "Blocked", "due": "2026-05-09" },
+      { "id": "t9", "title": "Produce executive summary slide", "owner": "Miguel", "status": "In progress", "due": "2026-05-11" }
+    ],
+    "stack": [
+      { "id": "s6", "layer": "Identity", "product": "Microsoft Entra ID", "vendor": "Microsoft", "purpose": "Conditional access and identity protection", "criticality": "Critical" },
+      { "id": "s7", "layer": "Endpoint", "product": "Microsoft Intune", "vendor": "Microsoft", "purpose": "Device management and compliance", "criticality": "Critical" }
+    ],
+    "sbom": [
+      { "id": "b4", "component": "PowerShell Graph SDK", "version": "2.27.0", "license": "MIT", "supplier": "Microsoft", "securityNotes": "Used for configuration evidence collection." }
+    ]
+  }
+]

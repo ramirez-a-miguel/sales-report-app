@@ -1,0 +1,78 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: presales
+      POSTGRES_PASSWORD: presales
+      POSTGRES_DB: presales_reports
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U presales -d presales_reports"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    tmpfs:
+      - /var/lib/postgresql/data
+
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile.api
+    environment:
+      PORT: 3001
+      DATABASE_URL: postgres://presales:presales@postgres:5432/presales_reports
+    depends_on:
+      postgres:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "node -e \"fetch('http://127.0.0.1:3001/api/health').then(r => process.exit(r.ok ? 0 : 1)).catch(() => process.exit(1))\""]
+      interval: 5s
+      timeout: 5s
+      retries: 12
+
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile.web
+      args:
+        VITE_API_URL: http://127.0.0.1:3001
+    depends_on:
+      api:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://127.0.0.1/ | grep -q '<div id=\"root\"></div>'"]
+      interval: 5s
+      timeout: 5s
+      retries: 12
+
+  smoke-test:
+    image: node:22-alpine
+    depends_on:
+      api:
+        condition: service_healthy
+      web:
+        condition: service_healthy
+    command:
+      - node
+      - -e
+      - |
+        const assert = (condition, message) => {
+          if (!condition) {
+            console.error(message);
+            process.exit(1);
+          }
+        };
+
+        const api = await fetch('http://api:3001/api/health').then((response) => response.json());
+        assert(api.ok === true, 'API health check failed');
+        assert(api.storage === 'postgres', 'API is not using Postgres');
+
+        const projects = await fetch('http://api:3001/api/projects').then((response) => response.json());
+        assert(Array.isArray(projects), 'Projects response is not an array');
+        assert(projects.length >= 3, 'Seed projects were not loaded');
+        assert(projects.some((project) => project.stack?.length > 0), 'Tech stack data is missing');
+        assert(projects.some((project) => project.sbom?.length > 0), 'SBOM data is missing');
+
+        const html = await fetch('http://web/').then((response) => response.text());
+        assert(html.includes('<div id="root"></div>'), 'Web frontend did not serve the React shell');
+
+        console.log('Stack smoke test passed: Postgres, API, seed data, SBOM, tech stack, and web frontend are reachable.');
