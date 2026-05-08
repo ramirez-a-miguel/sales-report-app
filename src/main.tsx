@@ -163,7 +163,7 @@ const seedProjects: Project[] = [
 
 const uid = () => Math.random().toString(36).slice(2, 10);
 const currency = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 });
-const apiUrl = import.meta.env.VITE_API_URL ?? 'http://127.0.0.1:3001';
+const apiUrl = import.meta.env.VITE_API_URL ?? '';
 const azureTheme = createTheme({
   palette: {
     primary: {
